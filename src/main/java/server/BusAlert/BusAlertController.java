@@ -1,9 +1,7 @@
 package server.BusAlert;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import server.BusAlert.models.Route;
 
 @RestController
@@ -25,16 +23,23 @@ public class BusAlertController {
      * The method uses takes an HTTP POST request containing
      *
      * @param routeId - this is the
-     * @param latitude
-     * @param longitude
+     * @param latitude - latitude portion of GPS
+     * @param longitude - longitude portion of GPS
      */
     @PostMapping(GPS_PATH)
     public void receiveGPS(
             @RequestParam("routeId") String routeId,
-            @RequestParam("latitude") String latitude,
-            @RequestParam("longitude") String longitude
+            @RequestParam("latitude") Float latitude,
+            @RequestParam("longitude") Float longitude
     ){
         // pass the info to the BusAlertService to handle the business logic
+    }
+
+    @GetMapping(ROUTE_PATH)
+    public Route getRoute(
+            @RequestParam("Id") Long Id
+    ){
+        return busAlertService.getRoute(Id);
     }
 
     @PostMapping(ROUTE_PATH)
@@ -50,6 +55,13 @@ public class BusAlertController {
             @RequestParam("code") String code
     ){
         return busAlertService.modifyRoute(Id, code);
+    }
+
+    @DeleteMapping(ROUTE_PATH)
+    public Route deleteRoute(
+            @RequestParam("Id") Long Id
+    ){
+        return busAlertService.deleteRoute(Id);
     }
 
 }
