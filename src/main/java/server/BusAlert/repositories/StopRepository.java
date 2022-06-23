@@ -5,7 +5,7 @@ import server.BusAlert.models.Stop;
 
 import java.util.List;
 
-public interface stopRepository extends CrudRepository<Stop, Long> {
+public interface StopRepository extends CrudRepository<Stop, Long> {
     @Override
     List<Stop> findAll();
 

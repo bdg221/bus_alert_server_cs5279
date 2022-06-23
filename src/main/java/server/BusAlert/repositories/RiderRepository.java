@@ -5,7 +5,7 @@ import server.BusAlert.models.Rider;
 
 import java.util.List;
 
-public interface riderRepository extends CrudRepository<Rider, Long> {
+public interface RiderRepository extends CrudRepository<Rider, Long> {
     @Override
     List<Rider> findAll();
 }
