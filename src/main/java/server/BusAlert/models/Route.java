@@ -13,7 +13,6 @@ public class Route {
     private String code;
 
     @OneToMany
-    private List<Stop>;
-
+    private List<Stop> stops;
 
 }
