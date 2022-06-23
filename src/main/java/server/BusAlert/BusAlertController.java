@@ -44,4 +44,12 @@ public class BusAlertController {
         return busAlertService.addRoute(code);
     }
 
+    @PostMapping(ROUTE_PATH)
+    public Route modifyRoute(
+            @RequestParam("Id") Long Id,
+            @RequestParam("code") String code
+    ){
+        return busAlertService.modifyRoute(Id, code);
+    }
+
 }
