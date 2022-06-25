@@ -12,6 +12,10 @@ public class Stop {
 
     private String shortCode;
 
+    private Float longitude;
+
+    private Float latitude;
+
     @ManyToOne
     @JoinColumn(name = "route_id")
     private Route route;
