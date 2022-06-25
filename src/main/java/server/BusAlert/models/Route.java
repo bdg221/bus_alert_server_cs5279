@@ -11,7 +11,7 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
-    private String code;
+    private String shortCode;
 
     @OneToMany(mappedBy = "route")
     private List<Stop> stops = new ArrayList<>();
@@ -19,8 +19,8 @@ public class Route {
     public Route() {
     }
 
-    public Route(String code) {
-        this.code = code;
+    public Route(String shortCode) {
+        this.shortCode = shortCode;
     }
 
     public Long getId() {
@@ -31,12 +31,12 @@ public class Route {
         Id = id;
     }
 
-    public String getCode() {
-        return code;
+    public String getShortCode() {
+        return shortCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
     }
 
     public List<Stop> getStops() {

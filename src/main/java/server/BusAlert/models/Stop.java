@@ -10,7 +10,7 @@ public class Stop {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
-    private String code;
+    private String shortCode;
 
     @ManyToOne
     @JoinColumn(name = "route_id")
@@ -22,16 +22,16 @@ public class Stop {
     public Stop() {
     }
 
-    public Stop(String code) {
-        this.code = code;
+    public Stop(String shortC) {
+        this.shortCode = shortCode;
     }
 
-    public String getCode() {
-        return code;
+    public String getShortCode() {
+        return shortCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setShortCode(String shortCode) {
+        this.shortCode = shortCode;
     }
 
     public Route getRoute() {

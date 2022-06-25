@@ -18,17 +18,17 @@ public class BusAlertService {
         return getRouteFromRepository(Id);
     }
 
-    public Route addRoute(String code){
-        Route route = new Route(code);
+    public Route addRoute(String shortCode){
+        Route route = new Route(shortCode);
         return routeRepository.save(route);
     }
 
-    public Route modifyRoute(Long Id, String code){
+    public Route modifyRoute(Long Id, String shortCode){
         Route route = getRouteFromRepository(Id);
          if(route == null){
             return null;
         }
-        route.setCode(code);
+        route.setShortCode(shortCode);
         return routeRepository.save(route);
     }
 

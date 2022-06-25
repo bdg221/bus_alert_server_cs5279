@@ -12,6 +12,7 @@ public class BusAlertController {
     public static final String RIDER_PATH = "/api/" + API_VERSION +"/rider";
     public static final String STOP_PATH = "/api/" + API_VERSION +"/stop";
     public static final String ROUTE_PATH = "/api/" + API_VERSION +"/route";
+    public static final String MODIFY_ROUTE_PATH = "/api/" + API_VERSION +"/route/{Id}";
 
     public static final String GPS_PATH = "/api/" + API_VERSION +"/gps";
 
@@ -44,17 +45,17 @@ public class BusAlertController {
 
     @PostMapping(ROUTE_PATH)
     public Route addRoute(
-            @RequestParam("code") String code
+            @RequestParam("shortCode") String shortCode
     ){
-        return busAlertService.addRoute(code);
+        return busAlertService.addRoute(shortCode);
     }
 
-    @PostMapping(ROUTE_PATH)
+    @PostMapping(MODIFY_ROUTE_PATH)
     public Route modifyRoute(
             @RequestParam("Id") Long Id,
-            @RequestParam("code") String code
+            @RequestParam("shortCode") String shortCode
     ){
-        return busAlertService.modifyRoute(Id, code);
+        return busAlertService.modifyRoute(Id, shortCode);
     }
 
     @DeleteMapping(ROUTE_PATH)
