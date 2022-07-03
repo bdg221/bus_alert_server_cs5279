@@ -47,6 +47,7 @@ public class BusAlertController {
     public Route addRoute(
             @RequestParam("shortCode") String shortCode
     ){
+        System.out.println("INSIDE ADD ROUTE");
         return busAlertService.addRoute(shortCode);
     }
 
