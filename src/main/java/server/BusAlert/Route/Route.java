@@ -1,4 +1,6 @@
-package server.BusAlert.models;
+package server.BusAlert.Route;
+
+import server.BusAlert.Stop.Stop;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -43,7 +45,9 @@ public class Route {
         return stops;
     }
 
-    public void setStops(List<Stop> stops) {
-        this.stops = stops;
+    public void addStop(Stop stop) {
+        this.stops.add(stop);
     }
+
+    public void deleteStop(Stop stop) { this.stops.remove(stop); }
 }
