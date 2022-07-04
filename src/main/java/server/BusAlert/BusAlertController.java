@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import server.BusAlert.models.Route;
 
+import java.util.List;
+
 @RestController
 public class BusAlertController {
 
@@ -12,7 +14,7 @@ public class BusAlertController {
     public static final String RIDER_PATH = "/api/" + API_VERSION +"/rider";
     public static final String STOP_PATH = "/api/" + API_VERSION +"/stop";
     public static final String ROUTE_PATH = "/api/" + API_VERSION +"/route";
-    public static final String MODIFY_ROUTE_PATH = "/api/" + API_VERSION +"/route/{Id}";
+    public static final String SPECIFIC_ROUTE_PATH = "/api/" + API_VERSION +"/route/{Id}";
 
     public static final String GPS_PATH = "/api/" + API_VERSION +"/gps";
 
@@ -37,8 +39,13 @@ public class BusAlertController {
     }
 
     @GetMapping(ROUTE_PATH)
+    public List<Route> getRoutes(){
+        return busAlertService.getRoutes();
+    }
+
+    @GetMapping(SPECIFIC_ROUTE_PATH)
     public Route getRoute(
-            @RequestParam("Id") Long Id
+            @PathVariable ("Id") Long Id
     ){
         return busAlertService.getRoute(Id);
     }
@@ -47,23 +54,22 @@ public class BusAlertController {
     public Route addRoute(
             @RequestParam("shortCode") String shortCode
     ){
-        System.out.println("INSIDE ADD ROUTE");
         return busAlertService.addRoute(shortCode);
     }
 
-    @PostMapping(MODIFY_ROUTE_PATH)
+    @PostMapping(SPECIFIC_ROUTE_PATH)
     public Route modifyRoute(
-            @RequestParam("Id") Long Id,
+            @PathVariable("Id") Long Id,
             @RequestParam("shortCode") String shortCode
     ){
         return busAlertService.modifyRoute(Id, shortCode);
     }
 
-    @DeleteMapping(ROUTE_PATH)
-    public Route deleteRoute(
-            @RequestParam("Id") Long Id
+    @DeleteMapping(SPECIFIC_ROUTE_PATH)
+    public void deleteRoute(
+            @PathVariable("Id") Long Id
     ){
-        return busAlertService.deleteRoute(Id);
+        busAlertService.deleteRoute(Id);
     }
 
 }

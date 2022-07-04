@@ -8,4 +8,6 @@ import java.util.List;
 public interface RouteRepository extends CrudRepository<Route, Long> {
     @Override
     List<Route> findAll();
+
+    List<Route> findByShortCode(String shortCode);
 }

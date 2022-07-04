@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import server.BusAlert.models.Route;
 import server.BusAlert.repositories.RouteRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -13,6 +14,10 @@ public class BusAlertService {
     @Autowired
     private RouteRepository routeRepository;
 
+
+    public List<Route> getRoutes(){
+        return routeRepository.findAll();
+    }
 
     public Route getRoute(Long Id){
         return getRouteFromRepository(Id);
@@ -32,16 +37,19 @@ public class BusAlertService {
         return routeRepository.save(route);
     }
 
-    public Route deleteRoute(Long Id){
-        Route route = getRouteFromRepository(Id);
+    public void deleteRoute(Long Id){
         routeRepository.deleteById(Id);
-        return route;
     }
 
 
     private Route getRouteFromRepository(Long Id){
         Optional<Route> checkRoute = routeRepository.findById(Id);
         return (checkRoute.isEmpty() ?  null : checkRoute.get());
+    }
+
+    private Route getRouteFromShort_Code(String shortCode){
+        List<Route> checkRoute = routeRepository.findByShortCode(shortCode);
+        return (checkRoute.isEmpty() ?  null : checkRoute.get(0));
     }
 
 }
