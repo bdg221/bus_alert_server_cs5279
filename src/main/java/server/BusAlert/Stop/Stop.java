@@ -1,4 +1,7 @@
-package server.BusAlert.models;
+package server.BusAlert.Stop;
+
+import server.BusAlert.models.Rider;
+import server.BusAlert.Route.Route;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,8 +29,27 @@ public class Stop {
     public Stop() {
     }
 
-    public Stop(String shortC) {
+    public Stop(String shortCode, Float longitude, Float latitude, Route route) {
         this.shortCode = shortCode;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.route = route;
+    }
+
+    public Float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
+    }
+
+    public Float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
     }
 
     public String getShortCode() {
@@ -50,7 +72,9 @@ public class Stop {
         return riders;
     }
 
-    public void setRiders(List<Rider> riders) {
-        this.riders = riders;
+    public void addRider(Rider rider) {
+        this.riders.add(rider);
     }
-}
+
+    public void deleteRider(Rider rider) { this.riders.remove(rider); }
+ }

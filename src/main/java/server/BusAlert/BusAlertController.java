@@ -2,7 +2,10 @@ package server.BusAlert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import server.BusAlert.models.Route;
+import server.BusAlert.Route.RouteService;
+import server.BusAlert.Stop.Stop;
+import server.BusAlert.Stop.StopService;
+import server.BusAlert.Route.Route;
 
 import java.util.List;
 
@@ -12,14 +15,24 @@ public class BusAlertController {
     public static final String API_VERSION = "1.0";
 
     public static final String RIDER_PATH = "/api/" + API_VERSION +"/rider";
+    public static final String SPECIFIC_RIDER_PATH = RIDER_PATH +"/{Id}";
+
     public static final String STOP_PATH = "/api/" + API_VERSION +"/stop";
+    public static final String SPECIFIC_STOP_PATH = STOP_PATH +"/{Id}";
+
     public static final String ROUTE_PATH = "/api/" + API_VERSION +"/route";
-    public static final String SPECIFIC_ROUTE_PATH = "/api/" + API_VERSION +"/route/{Id}";
+    public static final String SPECIFIC_ROUTE_PATH = ROUTE_PATH +"/{Id}";
 
     public static final String GPS_PATH = "/api/" + API_VERSION +"/gps";
 
     @Autowired
     private BusAlertService busAlertService;
+
+    @Autowired
+    private RouteService routeService;
+
+    @Autowired
+    private StopService stopService;
 
 
     /**
@@ -40,21 +53,21 @@ public class BusAlertController {
 
     @GetMapping(ROUTE_PATH)
     public List<Route> getRoutes(){
-        return busAlertService.getRoutes();
+        return routeService.getRoutes();
     }
 
     @GetMapping(SPECIFIC_ROUTE_PATH)
     public Route getRoute(
             @PathVariable ("Id") Long Id
     ){
-        return busAlertService.getRoute(Id);
+        return routeService.getRoute(Id);
     }
 
     @PostMapping(ROUTE_PATH)
     public Route addRoute(
             @RequestParam("shortCode") String shortCode
     ){
-        return busAlertService.addRoute(shortCode);
+        return routeService.addRoute(shortCode);
     }
 
     @PostMapping(SPECIFIC_ROUTE_PATH)
@@ -62,14 +75,54 @@ public class BusAlertController {
             @PathVariable("Id") Long Id,
             @RequestParam("shortCode") String shortCode
     ){
-        return busAlertService.modifyRoute(Id, shortCode);
+        return routeService.modifyRoute(Id, shortCode);
     }
 
     @DeleteMapping(SPECIFIC_ROUTE_PATH)
     public void deleteRoute(
             @PathVariable("Id") Long Id
     ){
-        busAlertService.deleteRoute(Id);
+        routeService.deleteRoute(Id);
+    }
+
+    @GetMapping(STOP_PATH)
+    public List<Stop> getStops(){
+        return stopService.getStops();
+    }
+
+    @GetMapping(SPECIFIC_STOP_PATH)
+    public Stop getStop(
+            @PathVariable("Id") Long Id
+    ){
+        return stopService.getStop(Id);
+    }
+
+    @PostMapping(STOP_PATH)
+    public Stop addStop(
+            @RequestParam("shortCode") String shortCode,
+            @RequestParam("longitude") Float longitude,
+            @RequestParam("latitude") Float latitude,
+            @RequestParam("route") Long routeId
+    ){
+        return stopService.addStop(shortCode, longitude, latitude, routeId);
+    }
+
+    @PostMapping(SPECIFIC_STOP_PATH)
+    public Stop modifyStop(
+            @PathVariable("Id") Long Id,
+            @RequestParam(required = false, name="shortCode") String shortCode,
+            @RequestParam(required = false, name="longitude") Float longitude,
+            @RequestParam(required = false, name="latitude") Float latitude,
+            @RequestParam(required = false, name="route") Long routeId
+    ){
+        return stopService.modifyStop(Id, shortCode, longitude, latitude, routeId);
+    }
+
+    @DeleteMapping(SPECIFIC_STOP_PATH)
+    public void deleteStop(
+            @PathVariable("Id") Long Id
+    ){
+        stopService.deleteStop(Id);
     }
 
 }

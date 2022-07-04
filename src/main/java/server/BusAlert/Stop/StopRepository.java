@@ -1,7 +1,7 @@
-package server.BusAlert.repositories;
+package server.BusAlert.Stop;
 
 import org.springframework.data.repository.CrudRepository;
-import server.BusAlert.models.Stop;
+import server.BusAlert.Stop.Stop;
 
 import java.util.List;
 

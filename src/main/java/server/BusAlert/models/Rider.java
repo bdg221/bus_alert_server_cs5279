@@ -1,5 +1,7 @@
 package server.BusAlert.models;
 
+import server.BusAlert.Stop.Stop;
+
 import javax.persistence.*;
 
 @Entity
