@@ -1,7 +1,6 @@
-package server.BusAlert.repositories;
+package server.BusAlert.Rider;
 
 import org.springframework.data.repository.CrudRepository;
-import server.BusAlert.models.Rider;
 
 import java.util.List;
 

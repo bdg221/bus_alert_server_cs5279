@@ -1,4 +1,4 @@
-package server.BusAlert.models;
+package server.BusAlert.Rider;
 
 import server.BusAlert.Stop.Stop;
 

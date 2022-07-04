@@ -1,6 +1,6 @@
 package server.BusAlert.Stop;
 
-import server.BusAlert.models.Rider;
+import server.BusAlert.Rider.Rider;
 import server.BusAlert.Route.Route;
 
 import javax.persistence.*;
