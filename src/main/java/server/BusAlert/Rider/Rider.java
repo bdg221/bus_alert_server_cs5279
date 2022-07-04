@@ -19,8 +19,9 @@ public class Rider {
     public Rider() {
     }
 
-    public Rider(String phone) {
+    public Rider(String phone, Stop stop) {
         this.phone = phone;
+        this.stop = stop;
     }
 
     public String getPhone() {
