@@ -1,5 +1,6 @@
 package server.BusAlert.Stop;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import server.BusAlert.Rider.Rider;
 import server.BusAlert.Route.Route;
 
@@ -10,7 +11,7 @@ import java.util.List;
 @Entity
 public class Stop {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
     private String shortCode;
@@ -21,6 +22,7 @@ public class Stop {
 
     @ManyToOne
     @JoinColumn(name = "route_id")
+    @JsonIgnore
     private Route route;
 
     @OneToMany(mappedBy = "stop")
@@ -34,6 +36,10 @@ public class Stop {
         this.longitude = longitude;
         this.latitude = latitude;
         this.route = route;
+    }
+
+    public Long getId() {
+        return Id;
     }
 
     public Float getLongitude() {
@@ -60,13 +66,12 @@ public class Stop {
         this.shortCode = shortCode;
     }
 
-    public Route getRoute() {
-        return route;
-    }
 
     public void setRoute(Route route) {
         this.route = route;
     }
+
+    public Route getRoute() { return this.route; }
 
     public List<Rider> getRiders() {
         return riders;
@@ -77,4 +82,5 @@ public class Stop {
     }
 
     public void deleteRider(Rider rider) { this.riders.remove(rider); }
+
  }

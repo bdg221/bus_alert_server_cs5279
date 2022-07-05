@@ -1,5 +1,6 @@
 package server.BusAlert.Rider;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import server.BusAlert.Stop.Stop;
 
 import javax.persistence.*;
@@ -7,13 +8,14 @@ import javax.persistence.*;
 @Entity
 public class Rider {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long Id;
 
     private String phone;
 
     @ManyToOne
     @JoinColumn(name = "stop_id")
+    @JsonIgnore
     private Stop stop;
 
     public Rider() {
@@ -22,6 +24,10 @@ public class Rider {
     public Rider(String phone, Stop stop) {
         this.phone = phone;
         this.stop = stop;
+    }
+
+    public Long getId() {
+        return Id;
     }
 
     public String getPhone() {

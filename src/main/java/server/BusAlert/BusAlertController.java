@@ -2,6 +2,8 @@ package server.BusAlert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import server.BusAlert.Rider.Rider;
+import server.BusAlert.Rider.RiderService;
 import server.BusAlert.Route.RouteService;
 import server.BusAlert.Stop.Stop;
 import server.BusAlert.Stop.StopService;
@@ -34,6 +36,8 @@ public class BusAlertController {
     @Autowired
     private StopService stopService;
 
+    @Autowired
+    private RiderService riderService;
 
     /**
      * The method uses takes an HTTP POST request containing
@@ -125,4 +129,39 @@ public class BusAlertController {
         stopService.deleteStop(Id);
     }
 
+    @GetMapping(RIDER_PATH)
+    public List<Rider> getRiders(){
+        return riderService.getRiders();
+    }
+
+    @GetMapping(SPECIFIC_RIDER_PATH)
+    public Rider getRider(
+            @PathVariable("Id") Long Id
+    ){
+        return riderService.getRider(Id);
+    }
+
+    @PostMapping(RIDER_PATH)
+    public Rider addRider(
+            @RequestParam("phone") String phone,
+            @RequestParam("stop") Long stopId
+    ){
+        return riderService.addRider(phone, stopId);
+    }
+
+    @PostMapping(SPECIFIC_RIDER_PATH)
+    public Rider modifyRider(
+            @PathVariable("Id") Long Id,
+            @RequestParam(required = false, name="phone") String phone,
+            @RequestParam(required = false, name="stop") Long stopId
+    ){
+        return riderService.modifyRider(Id, phone, stopId);
+    }
+
+    @DeleteMapping(SPECIFIC_RIDER_PATH)
+    public void deleteRider(
+            @PathVariable("Id") Long Id
+    ){
+        riderService.deleteRider(Id);
+    }
 }

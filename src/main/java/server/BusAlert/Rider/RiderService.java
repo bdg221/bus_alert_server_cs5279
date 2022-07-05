@@ -32,6 +32,7 @@ public class RiderService {
     ){
         Stop stop = stopService.getStop(stopId);
         Rider rider = new Rider(phone, stop);
+        rider = riderRepository.save(rider);
         stop.addRider(rider);
         return rider;
     }
