@@ -9,6 +9,8 @@ import server.BusAlert.Route.RouteService;
 import server.BusAlert.Stop.Stop;
 import server.BusAlert.Stop.StopService;
 import server.BusAlert.Route.Route;
+import server.BusAlert.Twilio.TwilioRequest;
+import server.BusAlert.Twilio.TwilioService;
 
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class BusAlertController {
     public static final String SPECIFIC_ROUTE_PATH = ROUTE_PATH +"/{Id}";
 
     public static final String GPS_PATH = "/api/" + API_VERSION +"/gps";
+    public static final String TEST_TWILIO_SERVICE_PATH = "/api/" + API_VERSION +"/twilio";
 
     @Autowired
     private BusAlertService busAlertService;
@@ -264,5 +267,16 @@ public class BusAlertController {
             @PathVariable("Id") Long Id
     ){
         riderService.deleteRider(Id);
+    }
+
+    /**
+     * Endpoint is used for testing purposes only
+     * @param twilioRequest phone number and message as a TwilioRequest
+     */
+    @PostMapping(TEST_TWILIO_SERVICE_PATH)
+    public boolean testTwilio(
+            @RequestBody TwilioRequest twilioRequest
+    ) {
+        return TwilioService.SendMessage(twilioRequest);
     }
 }
