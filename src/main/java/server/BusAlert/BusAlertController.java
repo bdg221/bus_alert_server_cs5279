@@ -2,6 +2,7 @@ package server.BusAlert;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import server.BusAlert.Location.LocationRequest;
 import server.BusAlert.Rider.Rider;
 import server.BusAlert.Rider.RiderService;
 import server.BusAlert.Route.RouteService;
@@ -55,9 +56,7 @@ public class BusAlertController {
      */
     @PostMapping(GPS_PATH)
     public void receiveGPS(
-            @RequestParam("routeShortCode") String routeShortCode,
-            @RequestParam("latitude") Float latitude,
-            @RequestParam("longitude") Float longitude
+            @RequestBody LocationRequest locationRequest
     ){
         // pass the info to the BusAlertService to handle the business logic
     }
