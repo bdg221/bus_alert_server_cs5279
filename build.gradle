@@ -26,3 +26,16 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+buildscript {
+	ext {
+		springBootVersion = '2.7.0'
+	}
+	repositories {
+		mavenCentral()
+		maven { url 'https://repo.spring.io/libs-snapshot' }
+	}
+	dependencies {
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+	}
+}
