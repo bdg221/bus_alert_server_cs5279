@@ -160,7 +160,7 @@ public class RiderService {
         Optional<Rider> checkRider = riderRepository.findById(Id);
 
         // if the Optional is empty return null otherwise return the Rider
-        return (checkRider.isEmpty() ?  null : checkRider.get());
+        return (checkRider.isPresent() ?  checkRider.get() : null);
     }
 
 }

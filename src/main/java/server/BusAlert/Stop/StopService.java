@@ -160,6 +160,6 @@ public class StopService {
         Optional<Stop> checkStop = stopRepository.findById(Id);
         // check if the Optional is empty and if so return null
         // otherwise return the Stop object in the Optional
-        return (checkStop.isEmpty() ?  null : checkStop.get());
+        return (checkStop.isPresent() ?  checkStop.get() : null);
     }
 }
