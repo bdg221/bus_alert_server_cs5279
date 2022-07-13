@@ -90,7 +90,7 @@ public class RouteService {
         // call findById to get an Optional Route object
         Optional<Route> checkRoute = routeRepository.findById(Id);
         // if the Optional is empty return null otherwise return the Route
-        return (checkRoute.isEmpty() ?  null : checkRoute.get());
+        return (checkRoute.isPresent() ?  checkRoute.get() : null);
     }
 
     /**
