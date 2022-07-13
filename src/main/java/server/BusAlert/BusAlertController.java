@@ -46,13 +46,17 @@ public class BusAlertController {
     @Autowired
     private RiderService riderService;
 
+    @GetMapping("/")
+    public String defaultGet(){
+        return "Hello World";
+    }
+
+
     /**
      * The method uses takes an HTTP POST request containing the GPS coordinates.
      * This is called by the Driver mobile app.
      *
-     * @param routeShortCode - this is the shortCode of the associated Route
-     * @param latitude - latitude portion of GPS
-     * @param longitude - longitude portion of GPS
+     * @param locationRequest is the object with for the GPS coords
      */
     @PostMapping(GPS_PATH)
     public void receiveGPS(
