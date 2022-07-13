@@ -2,13 +2,15 @@ plugins {
 	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'maven-publish'
 }
 
 group = 'server'
 version = '0.0.1-SNAPSHOT'
-
 sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
 
 repositories {
 	mavenCentral()
@@ -25,6 +27,16 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+publishing {
+	publications {
+		customLibrary(MavenPublication) {
+			groupId "server"
+			artifactId 'BusAlert'
+			version "0.0.1-SNAPSHOT"
+			from components.java
+		}
+	}
+}
 
 
 
