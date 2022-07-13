@@ -7,11 +7,9 @@ plugins {
 group = 'server'
 version = '0.0.1-SNAPSHOT'
 
-apply plugin: 'java'
-compileJava {
-	sourceCompatibility = '1.8'
-	targetCompatibility = '1.8'
-}
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
 repositories {
 	mavenCentral()
 }
