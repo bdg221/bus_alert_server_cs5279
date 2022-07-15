@@ -21,7 +21,7 @@ public class Rider {
      * The Id is the unique, primary key associated with the Rider.
      */
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long Id;
 
     /**

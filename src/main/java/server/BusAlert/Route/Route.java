@@ -22,7 +22,7 @@ public class Route {
      * The Id is the unique, primary key associated with the Route.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
     /**
