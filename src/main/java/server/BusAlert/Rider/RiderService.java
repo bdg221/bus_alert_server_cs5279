@@ -2,7 +2,6 @@ package server.BusAlert.Rider;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import server.BusAlert.Route.Route;
 import server.BusAlert.Stop.Stop;
 import server.BusAlert.Stop.StopService;
 import server.BusAlert.Twilio.TwilioRequest;
@@ -37,12 +36,6 @@ public class RiderService {
 
 
     /**
-     * The TwilioService is used to send messages to riders
-     */
-    @Autowired
-    private TwilioService twilioService;
-
-    /**
      * The getRiders method returns all Riders in the database table.
      * @return a List of Rider objects
      */
@@ -65,19 +58,17 @@ public class RiderService {
      * The addRider method creates a new Rider, adds the Rider to a Stop, and finally
      * saves the Rider to the Rider table.
      *
-     * @param phone - the String phone number of the Rider
-     * @param stopId - the Stop Id value of the associated Stop for a Rider
+     * @param rider - Rider to be added and saved
      * @return the new Rider object that has been created and saved
      */
     public Rider addRider(
-            String phone,
-            Long stopId
+            Rider rider
     ){
         // First get the Stop object from the stopId
-        Stop stop = stopService.getStop(stopId);
+        Stop stop = stopService.getStop(rider.getStopIdOnly());
 
         // create a new Rider object with the passed in phone and Stop
-        Rider rider = new Rider(phone, stop);
+        rider.setStop(stop);
 
         // save the Rider in the database (auto-generates the Rider's Id value)
         rider = riderRepository.save(rider);
@@ -189,7 +180,7 @@ public class RiderService {
         // until that is complete, we will be saying all communication
         // attempts were successful and returning true
         if(TwilioService.SendMessage(new TwilioRequest(rider.getPhone(), msg))){
-            System.out.println("RiderSerive->notifyRider - SUCCESS - Message for rider ID "+rider.getId()+" was successful.");
+            System.out.println("RiderService->notifyRider - SUCCESS - Message for rider ID "+rider.getId()+" was successful.");
             return null;
         }
 

@@ -55,6 +55,7 @@ public class Stop {
 
     private Long routeIdOnly;
 
+
     /**
      * a List of Rider objects associated with the Stop
      */

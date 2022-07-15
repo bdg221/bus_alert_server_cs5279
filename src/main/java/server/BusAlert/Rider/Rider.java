@@ -39,6 +39,8 @@ public class Rider {
     @JsonIgnore
     private Stop stop;
 
+    private Long stopIdOnly;
+
     public Rider() {
     }
 
@@ -50,6 +52,14 @@ public class Rider {
     public Rider(String phone, Stop stop) {
         this.phone = phone;
         this.stop = stop;
+    }
+
+    public Long getStopIdOnly() {
+        return stopIdOnly;
+    }
+
+    public void setStopIdOnly(Long stopIdOnly) {
+        this.stopIdOnly = stopIdOnly;
     }
 
     public Long getId() {

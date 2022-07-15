@@ -227,16 +227,14 @@ public class BusAlertController {
     /**
      * This is a POST request to create a new rider. The business logic is
      * handled in the RiderService class
-     * @param phone is the phone number of the rider
-     * @param stopId is Id of a stop associated with the rider
+     * @param rider for the rider to Add
      * @return the newly created rider
      */
     @PostMapping(RIDER_PATH)
     public Rider addRider(
-            @RequestParam("phone") String phone,
-            @RequestParam("stop") Long stopId
+            @RequestBody Rider rider
     ){
-        return riderService.addRider(phone, stopId);
+        return riderService.addRider(rider);
     }
 
     /**

@@ -64,11 +64,13 @@ public class BusAlertService {
 
     private boolean checkOtherStops(LocationRequest locationRequest, Stop stop){
         Route route = stop.getRoute();
-        Long lastStop = route.getLastStop();
+
         List<Long> stopIds = route.getStops()
                 .stream()
                 .map(Stop::getId)
                 .collect(Collectors.toList());
+
+        Long lastStop = route.getLastStop() == null ? stopIds.get(stopIds.size()-1) : route.getLastStop();
 
         if( atStop(locationRequest, stop) ){
             if(Objects.equals(stop.getId(), stopIds.get(0)) && Objects.equals(lastStop, stopIds.get(stopIds.size()-1))){
