@@ -5,7 +5,12 @@ import org.springframework.stereotype.Service;
 import server.BusAlert.Route.Route;
 import server.BusAlert.Stop.Stop;
 import server.BusAlert.Stop.StopService;
+import server.BusAlert.Twilio.TwilioRequest;
+import server.BusAlert.Twilio.TwilioService;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +34,13 @@ public class RiderService {
      */
     @Autowired
     private StopService stopService;
+
+
+    /**
+     * The TwilioService is used to send messages to riders
+     */
+    @Autowired
+    private TwilioService twilioService;
 
     /**
      * The getRiders method returns all Riders in the database table.
@@ -165,12 +177,23 @@ public class RiderService {
 
     public Rider notifyRider(Rider rider){
 
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
+        Date date = new Date();
+
+        // Default message:
+        String msg = "Your bus is two stops away. "+ dateFormat.format(date);
+
+
         // This is where we would integrate with different outputs
         // Currently we are working on Twilio integration
         // until that is complete, we will be saying all communication
         // attempts were successful and returning true
-        System.out.println("SUCCESS - Message for rider ID "+rider.getId()+" was successful.");
-        return null;
+        if(TwilioService.SendMessage(new TwilioRequest(rider.getPhone(), msg))){
+            System.out.println("RiderSerive->notifyRider - SUCCESS - Message for rider ID "+rider.getId()+" was successful.");
+            return null;
+        }
+
+        return rider;
     }
 
 }
