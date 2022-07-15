@@ -37,7 +37,17 @@ public class Route {
     @OneToMany(mappedBy = "route")
     private List<Stop> stops = new ArrayList<>();
 
+    private Long lastStop;
+
     public Route() {
+    }
+
+    public Long getLastStop() {
+        return lastStop;
+    }
+
+    public void setLastStop(Long lastStop) {
+        this.lastStop = lastStop;
     }
 
     /**

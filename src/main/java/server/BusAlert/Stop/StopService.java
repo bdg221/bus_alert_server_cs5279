@@ -30,12 +30,6 @@ public class StopService {
     @Autowired
     private RouteService routeService;
 
-    /**
-     * Since the Riders need to be notified, the RiderSwervice is used.
-     */
-
-    @Autowired
-    private RiderService riderService;
 
     /**
      * The getStops method returns all Stops in the database
@@ -58,29 +52,20 @@ public class StopService {
 
     /**
      * The addStop method saves a new Stop to the database.
-     * @param shortcode String - readable value for a Stop
-     * @param longitude Float - part of the GPS coordinates
-     * @param latitude Float - part of the GPS coordinates
-     * @param routeId Long - Id of a Route
+     * @param stop object to be created and saved
      * @return the newly created Stop object
      */
     public Stop addStop(
-            String shortcode,
-            Float longitude,
-            Float latitude,
-            Long routeId
+            Stop stop
     ){
-        // get the Route form the routeId
-        Route route = routeService.getRoute(routeId);
-
-        // create a new Stop using the provided parameters and the Route
-        Stop stop = new Stop(shortcode, longitude, latitude, route);
+        // save full Route object to stop
+        stop.setRoute(routeService.getRoute(stop.getRouteIdOnly()));
 
         // save the Stop to the database which auto-generates the Id value
         stop = stopRepository.save(stop);
 
         // add the Stop to the Route
-        route.addStop(stop);
+        stop.getRoute().addStop(stop);
 
         // return the newly created Stop
         return stop;
@@ -174,14 +159,6 @@ public class StopService {
     }
 
 
-    public void notifyRiders(Stop stop){
-
-        stop.getRiders()
-                .parallelStream()
-                .map( rider -> riderService.notifyRider(rider))
-                .filter(Objects::nonNull)
-                .forEach(this::failedRiderNotifications);
-    }
 
 
     public void failedRiderNotifications(Rider rider){

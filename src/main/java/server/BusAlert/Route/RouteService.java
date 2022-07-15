@@ -45,16 +45,14 @@ public class RouteService {
 
     /**
      * The addRoute method creates a Route and saves it to the Route table
-     * @param shortCode - associate shortCode for the Route
+     * @param route - Full route object with just shortCode
      * @return the newly created Route object
      */
-    public Route addRoute(String shortCode){
-        // create a Route object with the passed in shortCode
-        Route route = new Route(shortCode);
+    public Route addRoute(Route route){
 
         // save the Route object to the database which also
         // auto-generates the Id field and return it
-        return routeRepository.save(route);
+        return routeRepository.save(new Route(route.getShortCode()));
     }
 
     /**

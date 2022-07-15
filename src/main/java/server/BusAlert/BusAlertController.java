@@ -95,14 +95,14 @@ public class BusAlertController {
     /**
      * This is a POST request to add a new route. The business logic is handled in
      * the RouteService class.
-     * @param shortCode for new route object
+     * @RequestBody route for new route object
      * @return the newly created Route object
      */
     @PostMapping(ROUTE_PATH)
     public Route addRoute(
-            @RequestParam("shortCode") String shortCode
+            @RequestBody Route route
     ){
-        return routeService.addRoute(shortCode);
+        return routeService.addRoute(route);
     }
 
     /**
@@ -158,20 +158,14 @@ public class BusAlertController {
     /**
      * This is a POST request to add a new stop to the database. The business logic
      * is handled in the StopService class.
-     * @param shortCode is a readable string value
-     * @param longitude part of the GPS coordinates
-     * @param latitude part of the GPS coordinates
-     * @param routeId of associated route
+     * @param stop is the Stop to be created
      * @return newly created stop
      */
     @PostMapping(STOP_PATH)
     public Stop addStop(
-            @RequestParam("shortCode") String shortCode,
-            @RequestParam("longitude") Float longitude,
-            @RequestParam("latitude") Float latitude,
-            @RequestParam("route") Long routeId
+            @RequestBody Stop stop
     ){
-        return stopService.addStop(shortCode, longitude, latitude, routeId);
+        return stopService.addStop(stop);
     }
 
     /**
