@@ -1,6 +1,7 @@
 package server.BusAlert.Stop;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import server.BusAlert.Rider.Rider;
 import server.BusAlert.Route.Route;
@@ -27,7 +28,8 @@ public class Stop {
      * The Id is the unique, primary key associated with the Route.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator="seq")
+    @GenericGenerator(name="seq", strategy = "increment")
     private Long Id;
 
     /**

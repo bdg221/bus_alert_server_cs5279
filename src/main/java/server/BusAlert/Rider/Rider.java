@@ -1,6 +1,7 @@
 package server.BusAlert.Rider;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
 import server.BusAlert.Stop.Stop;
 
 import javax.persistence.*;
@@ -21,7 +22,8 @@ public class Rider {
      * The Id is the unique, primary key associated with the Rider.
      */
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator="seq")
+    @GenericGenerator(name="seq", strategy = "increment")
     private Long Id;
 
     /**
