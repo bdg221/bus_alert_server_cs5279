@@ -105,7 +105,7 @@ public class BusAlertService {
         // Pull ENVIRONMENTAL VAR
         String env_unit = System.getenv("UNIT");
         // If ENVIRONMENTAL VAR is valid use that, otherwise use K for kilometer
-        char unit = !env_unit.isEmpty() &&
+        char unit = env_unit != null &&
                 (env_unit.charAt(0)  == 'K' || env_unit.charAt(0) == 'M' || env_unit.charAt(0) == 'N')
                 ? env_unit.charAt(0) : 'K';
 
@@ -114,7 +114,7 @@ public class BusAlertService {
         // Pull ENVIRONMENTAL VAR
         String env_limit = System.getenv("LIMIT");
         // If ENVIRONMENTAL VAR is valid use that, otherwise use 0.25 kilometeres
-        double limit = !env_limit.isEmpty() ? Double.parseDouble(env_limit) : 0.25;
+        double limit = env_limit != null ? Double.parseDouble(env_limit) : 0.25;
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
         dist = Math.acos(dist);
