@@ -6,4 +6,15 @@ public class LocationRequest {
     public Float latitude;
     public Float longitude;
 
+    public String getRouteId() {
+        return routeId;
+    }
+
+    public Float getLatitude() {
+        return latitude;
+    }
+
+    public Float getLongitude() {
+        return longitude;
+    }
 }

@@ -160,7 +160,17 @@ public class RiderService {
         Optional<Rider> checkRider = riderRepository.findById(Id);
 
         // if the Optional is empty return null otherwise return the Rider
-        return (checkRider.isPresent() ?  checkRider.get() : null);
+        return (checkRider.orElse(null));
+    }
+
+    public Rider notifyRider(Rider rider){
+
+        // This is where we would integrate with different outputs
+        // Currently we are working on Twilio integration
+        // until that is complete, we will be saying all communication
+        // attempts were successful and returning true
+        System.out.println("SUCCESS - Message for rider ID "+rider.getId()+" was successful.");
+        return null;
     }
 
 }

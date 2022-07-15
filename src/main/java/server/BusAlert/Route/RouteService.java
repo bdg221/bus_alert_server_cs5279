@@ -38,6 +38,11 @@ public class RouteService {
         return getRouteFromRepository(Id);
     }
 
+    public Route getRouteByShortCode(String shortCode){
+        return getRouteFromShort_Code(shortCode);
+    }
+
+
     /**
      * The addRoute method creates a Route and saves it to the Route table
      * @param shortCode - associate shortCode for the Route
@@ -90,8 +95,10 @@ public class RouteService {
         // call findById to get an Optional Route object
         Optional<Route> checkRoute = routeRepository.findById(Id);
         // if the Optional is empty return null otherwise return the Route
-        return (checkRoute.isPresent() ?  checkRoute.get() : null);
+        return (checkRoute.orElse(null));
     }
+
+
 
     /**
      * The getRouteFromShort_Code is a helper method to hanlde the error if the

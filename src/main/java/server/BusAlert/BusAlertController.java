@@ -66,6 +66,7 @@ public class BusAlertController {
             @RequestBody LocationRequest locationRequest
     ){
         // pass the info to the BusAlertService to handle the business logic
+        busAlertService.receiveGPS(locationRequest);
     }
 
     /**

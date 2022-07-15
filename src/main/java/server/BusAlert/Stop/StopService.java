@@ -2,10 +2,13 @@ package server.BusAlert.Stop;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.BusAlert.Rider.Rider;
+import server.BusAlert.Rider.RiderService;
 import server.BusAlert.Route.RouteService;
 import server.BusAlert.Route.Route;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -26,6 +29,13 @@ public class StopService {
      */
     @Autowired
     private RouteService routeService;
+
+    /**
+     * Since the Riders need to be notified, the RiderSwervice is used.
+     */
+
+    @Autowired
+    private RiderService riderService;
 
     /**
      * The getStops method returns all Stops in the database
@@ -160,6 +170,28 @@ public class StopService {
         Optional<Stop> checkStop = stopRepository.findById(Id);
         // check if the Optional is empty and if so return null
         // otherwise return the Stop object in the Optional
-        return (checkStop.isPresent() ?  checkStop.get() : null);
+        return (checkStop.orElse(null));
     }
+
+
+    public void notifyRiders(Stop stop){
+
+        stop.getRiders()
+                .parallelStream()
+                .map( rider -> riderService.notifyRider(rider))
+                .filter(Objects::nonNull)
+                .forEach(this::failedRiderNotifications);
+    }
+
+
+    public void failedRiderNotifications(Rider rider){
+        // do logging or other notifications that the communication
+        // failed at some points and we assume the Rider was NOT
+        // notified
+
+        System.out.println("FAILURE - Message to rider ID "+rider.getId()+ " failed.");
+    }
+
+
+
 }
