@@ -27,7 +27,7 @@ public class Stop {
      * The Id is the unique, primary key associated with the Route.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
 
     /**
