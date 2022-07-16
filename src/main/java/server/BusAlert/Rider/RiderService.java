@@ -183,7 +183,7 @@ public class RiderService {
             System.out.println("RiderService->notifyRider - SUCCESS - Message for rider ID "+rider.getId()+" was successful.");
             return null;
         }
-
+        System.out.println("RiderService->notifyRider - FAILURE - Message for rider ID "+rider.getId()+" was NOT successful.");
         return rider;
     }
 

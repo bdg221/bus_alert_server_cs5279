@@ -125,6 +125,7 @@ public class BusAlertService {
         } else if (unit == 'N') {
             dist = dist * 0.8684;
         }
+        System.out.println("Distance for stop " + stop.getShortCode() + " is: " + dist);
          return (dist <= limit);
     }
 
