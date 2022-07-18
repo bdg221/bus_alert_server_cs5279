@@ -58,6 +58,10 @@ public class StopService {
     public Stop addStop(
             Stop stop
     ){
+        if(routeService.getRoute(stop.getRouteIdOnly()) == null){
+            System.err.println("Failed to create stop " + stop.getShortCode() + " because route id " + stop.getRouteIdOnly() + " does not exist.");
+            return null;
+        }
         // save full Route object to stop
         stop.setRoute(routeService.getRoute(stop.getRouteIdOnly()));
 

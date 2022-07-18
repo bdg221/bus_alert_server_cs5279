@@ -66,6 +66,10 @@ public class RiderService {
     ){
         // First get the Stop object from the stopId
         Stop stop = stopService.getStop(rider.getStopIdOnly());
+        if(stop == null){
+            System.err.println("Failed to create rider " + rider.getPhone() + " because stop id" + rider.getStopIdOnly() + " does not exist.");
+            return null;
+        }
 
         // create a new Rider object with the passed in phone and Stop
         rider.setStop(stop);
