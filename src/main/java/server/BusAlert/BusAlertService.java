@@ -77,10 +77,13 @@ public class BusAlertService {
 
         if( atStop(locationRequest, stop) ){
             if(Objects.equals(stop.getId(), stopIds.get(0)) && Objects.equals(lastStop, stopIds.get(stopIds.size()-1))){
-                route.setLastStop(stop.getId());
+                // reached first stop on the route
+
+
+                routeService.updateLastStop(route, stop.getId());
                 return true;
             }
-            if(stop.getId() > lastStop){
+            if(stop.getId() == lastStop+1){
                 route.setLastStop(stop.getId());
                 return true;
             }

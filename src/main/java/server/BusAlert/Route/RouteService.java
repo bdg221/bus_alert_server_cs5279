@@ -96,7 +96,10 @@ public class RouteService {
         return (checkRoute.orElse(null));
     }
 
-
+public void updateLastStop(Route route, Long stopId){
+        route.setLastStop(stopId);
+        routeRepository.save(route);
+}
 
     /**
      * The getRouteFromShort_Code is a helper method to hanlde the error if the
