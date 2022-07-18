@@ -29,37 +29,40 @@ public class BusAlertService {
 
     public void receiveGPS(LocationRequest locationRequest){
 
+        if(routeService.getRouteByShortCode(locationRequest.getRouteId()) != null) {
 
-        routeService
-                // use the routeService to pull the reoute from the ShortCode
-                // which was passed inside the locationRequest
-                .getRouteByShortCode(locationRequest.getRouteId())
+            routeService
+                    // use the routeService to pull the reoute from the ShortCode
+                    // which was passed inside the locationRequest
+                    .getRouteByShortCode(locationRequest.getRouteId())
 
-                // From the Route object that matches the Route's ShortCode
-                // get a List of Stops
-                .getStops()
+                    // From the Route object that matches the Route's ShortCode
+                    // get a List of Stops
+                    .getStops()
 
-                // turn this into parallel streams for better processing
-                .parallelStream()
+                    // turn this into parallel streams for better processing
+                    .parallelStream()
 
-                // call helper method atStop which says if GPS coordinates passed
-                // in with LocationRequest is with 0.5 km of each stop
-                // only the True response remain in the stream
+                    // call helper method atStop which says if GPS coordinates passed
+                    // in with LocationRequest is with 0.5 km of each stop
+                    // only the True response remain in the stream
 
-                .filter( stop -> checkOtherStops(locationRequest, stop))
-                .forEach(stop -> stop
-                        .getRoute()
-                        .getStops()
-                        .get(stop.getRoute().getStops().indexOf(stop) + 2)
-                        .getRiders()
-                        .parallelStream()
-                        .map( rider ->
-                                riderService
-                                        .notifyRider(rider)
-                        )
-                        .filter(Objects::nonNull)
-                        .forEach( rider -> stopService.failedRiderNotifications(rider)));
-
+                    .filter(stop -> checkOtherStops(locationRequest, stop))
+                    .forEach(stop -> stop
+                            .getRoute()
+                            .getStops()
+                            .get(stop.getRoute().getStops().indexOf(stop) + 2)
+                            .getRiders()
+                            .parallelStream()
+                            .map(rider ->
+                                    riderService
+                                            .notifyRider(rider)
+                            )
+                            .filter(Objects::nonNull)
+                            .forEach(rider -> stopService.failedRiderNotifications(rider)));
+        }else{
+            System.err.println("Error - Route with shortCode "+locationRequest.getRouteId()+" does not exist.");
+        }
     }
 
     private boolean checkOtherStops(LocationRequest locationRequest, Stop stop){
