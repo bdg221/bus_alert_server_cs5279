@@ -1,8 +1,11 @@
 package server.BusAlert.Stop;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import server.BusAlert.Rider.Rider;
 import server.BusAlert.Route.Route;
+import server.BusAlert.Route.RouteService;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,7 +28,8 @@ public class Stop {
      * The Id is the unique, primary key associated with the Route.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator="seq")
+    @GenericGenerator(name="seq", strategy = "increment")
     private Long Id;
 
     /**
@@ -51,6 +55,9 @@ public class Stop {
     @JsonIgnore
     private Route route;
 
+    private Long routeIdOnly;
+
+
     /**
      * a List of Rider objects associated with the Stop
      */
@@ -72,6 +79,19 @@ public class Stop {
         this.longitude = longitude;
         this.latitude = latitude;
         this.route = route;
+        this.routeIdOnly = route.getId();
+    }
+
+    public Stop(String shortCode, Float longitude, Float latitude, Long routeIdOnly) {
+        this.shortCode = shortCode;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.routeIdOnly = routeIdOnly;
+        this.route = null;
+    }
+
+    public Long getRouteIdOnly() {
+        return routeIdOnly;
     }
 
     public Long getId() {

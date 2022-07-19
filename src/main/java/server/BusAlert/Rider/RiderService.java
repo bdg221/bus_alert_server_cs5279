@@ -2,10 +2,14 @@ package server.BusAlert.Rider;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import server.BusAlert.Route.Route;
 import server.BusAlert.Stop.Stop;
 import server.BusAlert.Stop.StopService;
+import server.BusAlert.Twilio.TwilioRequest;
+import server.BusAlert.Twilio.TwilioService;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +34,7 @@ public class RiderService {
     @Autowired
     private StopService stopService;
 
+
     /**
      * The getRiders method returns all Riders in the database table.
      * @return a List of Rider objects
@@ -53,19 +58,21 @@ public class RiderService {
      * The addRider method creates a new Rider, adds the Rider to a Stop, and finally
      * saves the Rider to the Rider table.
      *
-     * @param phone - the String phone number of the Rider
-     * @param stopId - the Stop Id value of the associated Stop for a Rider
+     * @param rider - Rider to be added and saved
      * @return the new Rider object that has been created and saved
      */
     public Rider addRider(
-            String phone,
-            Long stopId
+            Rider rider
     ){
         // First get the Stop object from the stopId
-        Stop stop = stopService.getStop(stopId);
+        Stop stop = stopService.getStop(rider.getStopIdOnly());
+        if(stop == null){
+            System.err.println("Failed to create rider " + rider.getPhone() + " because stop id" + rider.getStopIdOnly() + " does not exist.");
+            return null;
+        }
 
         // create a new Rider object with the passed in phone and Stop
-        Rider rider = new Rider(phone, stop);
+        rider.setStop(stop);
 
         // save the Rider in the database (auto-generates the Rider's Id value)
         rider = riderRepository.save(rider);
@@ -160,7 +167,28 @@ public class RiderService {
         Optional<Rider> checkRider = riderRepository.findById(Id);
 
         // if the Optional is empty return null otherwise return the Rider
-        return (checkRider.isPresent() ?  checkRider.get() : null);
+        return (checkRider.orElse(null));
+    }
+
+    public Rider notifyRider(Rider rider){
+
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
+        Date date = new Date();
+
+        // Default message:
+        String msg = "Your bus is two stops away. "+ dateFormat.format(date);
+
+
+        // This is where we would integrate with different outputs
+        // Currently we are working on Twilio integration
+        // until that is complete, we will be saying all communication
+        // attempts were successful and returning true
+        if(TwilioService.SendMessage(new TwilioRequest(rider.getPhone(), msg))){
+            System.out.println("RiderService->notifyRider - SUCCESS - Message for rider ID "+rider.getId()+" was successful.");
+            return null;
+        }
+        System.out.println("RiderService->notifyRider - FAILURE - Message for rider ID "+rider.getId()+" was NOT successful.");
+        return rider;
     }
 
 }

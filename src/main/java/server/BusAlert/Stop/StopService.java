@@ -2,10 +2,13 @@ package server.BusAlert.Stop;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.BusAlert.Rider.Rider;
+import server.BusAlert.Rider.RiderService;
 import server.BusAlert.Route.RouteService;
 import server.BusAlert.Route.Route;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -26,6 +29,7 @@ public class StopService {
      */
     @Autowired
     private RouteService routeService;
+
 
     /**
      * The getStops method returns all Stops in the database
@@ -48,29 +52,24 @@ public class StopService {
 
     /**
      * The addStop method saves a new Stop to the database.
-     * @param shortcode String - readable value for a Stop
-     * @param longitude Float - part of the GPS coordinates
-     * @param latitude Float - part of the GPS coordinates
-     * @param routeId Long - Id of a Route
+     * @param stop object to be created and saved
      * @return the newly created Stop object
      */
     public Stop addStop(
-            String shortcode,
-            Float longitude,
-            Float latitude,
-            Long routeId
+            Stop stop
     ){
-        // get the Route form the routeId
-        Route route = routeService.getRoute(routeId);
-
-        // create a new Stop using the provided parameters and the Route
-        Stop stop = new Stop(shortcode, longitude, latitude, route);
+        if(routeService.getRoute(stop.getRouteIdOnly()) == null){
+            System.err.println("Failed to create stop " + stop.getShortCode() + " because route id " + stop.getRouteIdOnly() + " does not exist.");
+            return null;
+        }
+        // save full Route object to stop
+        stop.setRoute(routeService.getRoute(stop.getRouteIdOnly()));
 
         // save the Stop to the database which auto-generates the Id value
         stop = stopRepository.save(stop);
 
         // add the Stop to the Route
-        route.addStop(stop);
+        stop.getRoute().addStop(stop);
 
         // return the newly created Stop
         return stop;
@@ -160,6 +159,20 @@ public class StopService {
         Optional<Stop> checkStop = stopRepository.findById(Id);
         // check if the Optional is empty and if so return null
         // otherwise return the Stop object in the Optional
-        return (checkStop.isPresent() ?  checkStop.get() : null);
+        return (checkStop.orElse(null));
     }
+
+
+
+
+    public void failedRiderNotifications(Rider rider){
+        // do logging or other notifications that the communication
+        // failed at some points and we assume the Rider was NOT
+        // notified
+
+        System.out.println("FAILURE - Message to rider ID "+rider.getId()+ " failed.");
+    }
+
+
+
 }

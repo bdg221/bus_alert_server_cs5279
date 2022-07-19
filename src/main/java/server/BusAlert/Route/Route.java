@@ -1,5 +1,6 @@
 package server.BusAlert.Route;
 
+import org.hibernate.annotations.GenericGenerator;
 import server.BusAlert.Stop.Stop;
 
 import javax.persistence.*;
@@ -22,7 +23,8 @@ public class Route {
      * The Id is the unique, primary key associated with the Route.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator="seq")
+    @GenericGenerator(name="seq", strategy = "increment")
     private Long Id;
 
     /**
@@ -37,7 +39,17 @@ public class Route {
     @OneToMany(mappedBy = "route")
     private List<Stop> stops = new ArrayList<>();
 
+    private Long lastStop;
+
     public Route() {
+    }
+
+    public Long getLastStop() {
+        return lastStop;
+    }
+
+    public void setLastStop(Long lastStop) {
+        this.lastStop = lastStop;
     }
 
     /**

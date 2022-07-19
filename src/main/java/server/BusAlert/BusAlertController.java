@@ -66,6 +66,7 @@ public class BusAlertController {
             @RequestBody LocationRequest locationRequest
     ){
         // pass the info to the BusAlertService to handle the business logic
+        busAlertService.receiveGPS(locationRequest);
     }
 
     /**
@@ -94,14 +95,14 @@ public class BusAlertController {
     /**
      * This is a POST request to add a new route. The business logic is handled in
      * the RouteService class.
-     * @param shortCode for new route object
+     * @RequestBody route for new route object
      * @return the newly created Route object
      */
     @PostMapping(ROUTE_PATH)
     public Route addRoute(
-            @RequestParam("shortCode") String shortCode
+            @RequestBody Route route
     ){
-        return routeService.addRoute(shortCode);
+        return routeService.addRoute(route);
     }
 
     /**
@@ -157,20 +158,14 @@ public class BusAlertController {
     /**
      * This is a POST request to add a new stop to the database. The business logic
      * is handled in the StopService class.
-     * @param shortCode is a readable string value
-     * @param longitude part of the GPS coordinates
-     * @param latitude part of the GPS coordinates
-     * @param routeId of associated route
+     * @param stop is the Stop to be created
      * @return newly created stop
      */
     @PostMapping(STOP_PATH)
     public Stop addStop(
-            @RequestParam("shortCode") String shortCode,
-            @RequestParam("longitude") Float longitude,
-            @RequestParam("latitude") Float latitude,
-            @RequestParam("route") Long routeId
+            @RequestBody Stop stop
     ){
-        return stopService.addStop(shortCode, longitude, latitude, routeId);
+        return stopService.addStop(stop);
     }
 
     /**
@@ -232,16 +227,14 @@ public class BusAlertController {
     /**
      * This is a POST request to create a new rider. The business logic is
      * handled in the RiderService class
-     * @param phone is the phone number of the rider
-     * @param stopId is Id of a stop associated with the rider
+     * @param rider for the rider to Add
      * @return the newly created rider
      */
     @PostMapping(RIDER_PATH)
     public Rider addRider(
-            @RequestParam("phone") String phone,
-            @RequestParam("stop") Long stopId
+            @RequestBody Rider rider
     ){
-        return riderService.addRider(phone, stopId);
+        return riderService.addRider(rider);
     }
 
     /**
