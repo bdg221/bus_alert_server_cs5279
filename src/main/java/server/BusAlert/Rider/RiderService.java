@@ -34,6 +34,12 @@ public class RiderService {
     @Autowired
     private StopService stopService;
 
+    /**
+     * Dependecy injects twilioService to send messages to riders
+     */
+    @Autowired
+    private TwilioService twilioService;
+
 
     /**
      * The getRiders method returns all Riders in the database table.
@@ -183,7 +189,7 @@ public class RiderService {
         // Currently we are working on Twilio integration
         // until that is complete, we will be saying all communication
         // attempts were successful and returning true
-        if(TwilioService.SendMessage(new TwilioRequest(rider.getPhone(), msg))){
+        if(twilioService.SendMessage(new TwilioRequest(rider.getPhone(), msg))){
             System.out.println("RiderService->notifyRider - SUCCESS - Message for rider ID "+rider.getId()+" was successful.");
             return null;
         }
