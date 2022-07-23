@@ -3,7 +3,6 @@ package server.BusAlert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.BusAlert.Location.LocationRequest;
-import server.BusAlert.Rider.Rider;
 import server.BusAlert.Rider.RiderService;
 import server.BusAlert.Route.Route;
 import server.BusAlert.Route.RouteService;
@@ -12,8 +11,8 @@ import server.BusAlert.Stop.StopService;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class BusAlertService {
@@ -27,12 +26,13 @@ public class BusAlertService {
     @Autowired
     private StopService stopService;
 
-    public void receiveGPS(LocationRequest locationRequest){
+    public String receiveGPS(LocationRequest locationRequest){
+        AtomicReference<String> retStop = null;
 
         if(routeService.getRouteByShortCode(locationRequest.getRouteId()) != null) {
 
             routeService
-                    // use the routeService to pull the reoute from the ShortCode
+                    // use the routeService to pull the route from the ShortCode
                     // which was passed inside the locationRequest
                     .getRouteByShortCode(locationRequest.getRouteId())
 
@@ -48,9 +48,12 @@ public class BusAlertService {
                     // only the True response remain in the stream
 
                     .filter(stop -> checkOtherStops(locationRequest, stop))
-                    .forEach(stop -> stop
+                    .forEach(stop -> {
+                        retStop.set(stop.getShortCode());
+                        stop
                             .getRoute()
                             .getStops()
+
                             .get(stop.getRoute().getStops().indexOf(stop) + 2)
                             .getRiders()
                             .parallelStream()
@@ -59,10 +62,14 @@ public class BusAlertService {
                                             .notifyRider(rider)
                             )
                             .filter(Objects::nonNull)
-                            .forEach(rider -> stopService.failedRiderNotifications(rider)));
+                            .forEach(rider -> stopService.failedRiderNotifications(rider));}
+                    );
+            return retStop.get();
         }else{
             System.err.println("Error - Route with shortCode "+locationRequest.getRouteId()+" does not exist.");
         }
+
+        return null;
     }
 
     private boolean checkOtherStops(LocationRequest locationRequest, Stop stop){
@@ -72,6 +79,22 @@ public class BusAlertService {
                 .stream()
                 .map(Stop::getId)
                 .collect(Collectors.toList());
+
+
+
+        // TODO handle scenario of starting the day - notify stops 1 and 2
+        // if start of the day - lastStop according to the route matches the last stop in the list of stops of a route
+        if(Objects.equals(stopIds.get(stopIds.size() - 1), route.getLastStop())){
+
+            // checking the first stop
+            if (Objects.equals(stop, route.getStops().get(0))){
+                return true;
+            }
+            // checking the second stop
+            if (Objects.equals(stop, route.getStops().get(1))){
+                return true;
+            }
+        }
 
         Long lastStop = route.getLastStop() == null ? stopIds.get(stopIds.size()-1) : route.getLastStop();
 
