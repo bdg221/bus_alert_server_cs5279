@@ -49,6 +49,9 @@ public class BusAlertController {
     @Autowired
     private RiderService riderService;
 
+    @Autowired
+    private TwilioService twilioService;
+
     @GetMapping("/")
     public String defaultGet(){
         return "Hello World";
@@ -274,6 +277,6 @@ public class BusAlertController {
     public boolean testTwilio(
             @RequestBody TwilioRequest twilioRequest
     ) {
-        return TwilioService.SendMessage(twilioRequest);
+        return twilioService.SendMessage(twilioRequest);
     }
 }
