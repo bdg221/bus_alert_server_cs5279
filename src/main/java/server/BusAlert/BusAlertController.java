@@ -65,11 +65,11 @@ public class BusAlertController {
      * @param locationRequest is the object with for the GPS coords
      */
     @PostMapping(GPS_PATH)
-    public void receiveGPS(
+    public String receiveGPS(
             @RequestBody LocationRequest locationRequest
     ){
         // pass the info to the BusAlertService to handle the business logic
-        busAlertService.receiveGPS(locationRequest);
+        return busAlertService.receiveGPS(locationRequest);
     }
 
     /**

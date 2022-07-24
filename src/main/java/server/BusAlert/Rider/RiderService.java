@@ -176,13 +176,13 @@ public class RiderService {
         return (checkRider.orElse(null));
     }
 
-    public Rider notifyRider(Rider rider){
+    public Rider notifyRider(Rider rider, String msg){
 
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss MM/dd/yyyy");
         Date date = new Date();
 
         // Default message:
-        String msg = "Your bus is two stops away. "+ dateFormat.format(date);
+        msg = (msg == null) ? msg = "Your bus is two stops away. "+ dateFormat.format(date) : msg + " " + dateFormat.format(date);
 
 
         // This is where we would integrate with different outputs
