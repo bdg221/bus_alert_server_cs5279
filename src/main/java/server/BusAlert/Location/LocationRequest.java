@@ -6,6 +6,8 @@ public class LocationRequest {
     public Float latitude;
     public Float longitude;
 
+    public boolean isFirstPing = false;
+
     public String getRouteId() {
         return routeId;
     }
@@ -16,5 +18,9 @@ public class LocationRequest {
 
     public Float getLongitude() {
         return longitude;
+    }
+
+    public boolean isFirstPing() {
+        return isFirstPing;
     }
 }
