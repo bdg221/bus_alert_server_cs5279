@@ -119,29 +119,14 @@ public class BusAlertService {
 
 
 
-        // TODO handle scenario of starting the day - notify stops 1 and 2
-        // if start of the day - lastStop according to the route matches the last stop in the list of stops of a route
-        if(Objects.equals(stopIds.get(stopIds.size() - 1), route.getLastStop())){
-
-            // checking the first stop
-            if (Objects.equals(stop, route.getStops().get(0))){
-                return true;
-            }
-            // checking the second stop
-            if (Objects.equals(stop, route.getStops().get(1))){
-                return true;
-            }
-        }
-
         Long lastStop = route.getLastStop() == null ? stopIds.get(stopIds.size()-1) : route.getLastStop();
 
         if( atStop(locationRequest, stop) ){
-            if(Objects.equals(stop.getId(), stopIds.get(0)) && Objects.equals(lastStop, stopIds.get(stopIds.size()-1))){
-                // reached first stop on the route
-
-
+            // if at one of the last two stops there is nobody to notify
+            if(Objects.equals(stop.getId(), stopIds.get(stopIds.size()-2)) || Objects.equals(lastStop, stopIds.get(stopIds.size()-1))){
+                // update Last Stop but don't send text messages
                 routeService.updateLastStop(route, stop.getId());
-                return true;
+                return false;
             }
             if(stop.getId() == lastStop+1){
                 route.setLastStop(stop.getId());
