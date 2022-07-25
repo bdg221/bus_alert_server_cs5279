@@ -49,13 +49,15 @@ public class BusAlertController {
     @Autowired
     private RiderService riderService;
 
+
     @Autowired
     private TwilioService twilioService;
 
-    @GetMapping("/")
+/*    @GetMapping("/")
     public String defaultGet(){
         return "Hello World";
     }
+    */
 
 
     /**
