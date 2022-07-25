@@ -27,7 +27,9 @@ public class BusAlertService {
     private StopService stopService;
 
     public String receiveGPS(LocationRequest locationRequest){
+
         AtomicReference<String> retStop = new AtomicReference<>("");
+
 
         if(locationRequest.isFirstPing()){
             routeService
