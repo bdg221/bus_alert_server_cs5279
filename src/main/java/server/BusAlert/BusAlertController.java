@@ -49,10 +49,12 @@ public class BusAlertController {
     @Autowired
     private RiderService riderService;
 
+    /*
     @GetMapping("/")
     public String defaultGet(){
         return "Hello World";
     }
+    */
 
 
     /**
