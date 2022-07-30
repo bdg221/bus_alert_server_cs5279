@@ -31,42 +31,45 @@ public class BusAlertService {
         AtomicReference<String> retStop = new AtomicReference<>("");
 
 
-        if(locationRequest.isFirstPing()){
-            routeService
-            // use the routeService to pull the route from the ShortCode
-            // which was passed inside the locationRequest
-                    .getRouteByShortCode(locationRequest.getRouteId())
 
-                    // From the Route object that matches the Route's ShortCode
-                    // get a List of Stops
-                    .getStops()
-
-                    // turn this into parallel streams for better processing
-                    .parallelStream()
-
-                    // call helper method atStop which says if GPS coordinates passed
-                    // in with LocationRequest is with 0.5 km of each stop
-                    // only the True response remain in the stream
-
-                    .limit(2)
-                    .forEach(stop -> {
-                        retStop.set(stop.getShortCode());
-                        stop
-                                .getRiders()
-                                .parallelStream()
-                                .map( rider ->
-                                        riderService
-                                                .notifyRider(rider, "Your bus has started its route."))
-                                .filter(Objects::nonNull)
-                                .forEach(rider -> stopService.failedRiderNotifications(rider));
-                            }
-
-                    );
-            return retStop.get();
-
-        }
 
         if(routeService.getRouteByShortCode(locationRequest.getRouteId()) != null) {
+
+            if(locationRequest.isFirstPing()){
+                routeService
+                        // use the routeService to pull the route from the ShortCode
+                        // which was passed inside the locationRequest
+                        .getRouteByShortCode(locationRequest.getRouteId())
+
+                        // From the Route object that matches the Route's ShortCode
+                        // get a List of Stops
+                        .getStops()
+
+                        // turn this into parallel streams for better processing
+                        .parallelStream()
+
+                        // call helper method atStop which says if GPS coordinates passed
+                        // in with LocationRequest is with 0.5 km of each stop
+                        // only the True response remain in the stream
+
+                        .limit(2)
+                        .forEach(stop -> {
+                                    retStop.set(stop.getShortCode());
+                                    stop
+                                            .getRiders()
+                                            .parallelStream()
+                                            .map( rider ->
+                                                    riderService
+                                                            .notifyRider(rider, "Your bus has started its route."))
+                                            .filter(Objects::nonNull)
+                                            .forEach(rider -> stopService.failedRiderNotifications(rider));
+                                }
+
+                        );
+                return retStop.get();
+
+            }
+
 
             routeService
                     // use the routeService to pull the route from the ShortCode
