@@ -101,6 +101,16 @@ public void updateLastStop(Route route, Long stopId){
         routeRepository.save(route);
 }
 
+    public void incrementLastStop(Route route) {
+        route.incrementLastStop();
+        routeRepository.save(route);
+    }
+
+    public void startNewTrip(Route route) {
+        route.prepareForNewTrip();
+        routeRepository.save(route);
+    }
+
     /**
      * The getRouteFromShort_Code is a helper method to hanlde the error if the
      * database does not have a Route with the shortCode. If one or more Routes
