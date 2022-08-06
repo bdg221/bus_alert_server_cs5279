@@ -52,6 +52,14 @@ public class Route {
         this.lastStop = lastStop;
     }
 
+    public void incrementLastStop() {
+        this.lastStop += 1;
+    }
+
+    public void prepareForNewTrip() {
+        this.lastStop = null;
+    }
+
     /**
      * This is the main constructor used by the REST API.
      * @param shortCode - required - shortCode readable String

@@ -66,6 +66,11 @@ public class BusAlertService {
                                 }
 
                         );
+
+                // Since this is the first ping we can set the "last_stop" to nothing
+                Route route = routeService.getRouteByShortCode(locationRequest.getRouteId());
+                routeService.startNewTrip(route);
+
                 return retStop.get();
 
             }
@@ -131,8 +136,10 @@ public class BusAlertService {
                 routeService.updateLastStop(route, stop.getId());
                 return false;
             }
-            if(stop.getId() == lastStop+1){
-                route.setLastStop(stop.getId());
+
+            // if the route is at a _new_ stop (one greater than the last) then increment last stop of the route
+            if(stop.getId() > lastStop){
+                routeService.incrementLastStop(route);
                 return true;
             }
         }
